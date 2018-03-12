@@ -1,0 +1,4 @@
+/**
+ * Spot on the board
+ */
+

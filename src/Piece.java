@@ -7,7 +7,13 @@
 
 public class Piece{
     int x; int y;
-    boolean alive;
+    boolean alive = true;
+    boolean color;
+
+    public Piece(int xx, int yy, boolean colorr){
+        color = colorr;
+        x = xx; y = yy;
+    }
 
     public boolean getStatus(){
         return alive;

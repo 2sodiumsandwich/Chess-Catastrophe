@@ -5,7 +5,7 @@
 public class Pawn extends Piece{
     boolean firstMove = false;
 
-    public Pawn(boolean status, int x, int y){
-        super(status, x, y);
+    public Pawn(int x, int y, boolean color){
+        super(x, y, color);
     }
 }

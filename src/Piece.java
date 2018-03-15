@@ -15,6 +15,15 @@ public class Piece{
         x = xx; y = yy;
     }
 
+    public boolean getColor(){
+        return color;
+    }
+
+    public String getName(){
+        return "pawn"; //returns pawn for testing purposes
+        //method overridden in classes/
+    }
+
     public boolean getStatus(){
         return alive;
     }
@@ -38,11 +47,9 @@ public class Piece{
     public void setY(int newY){
         y = newY;
     }
-    
-    public boolean isValid(int startX, int startY, int toX, int toY){
-        return (startX > 7 || startX < 0 || startY > 7 || startX < 0 || toX > 7 || toX < 0 || toY > 7 || toX < 0 || (startX == toX) || (startY == toY));
-        //checks if the move requested is within board boundaries
+
+    public int[][] ValidSquares(Tile[][] tiles){
+        return new int[0][0];
     }
-    
 
 }

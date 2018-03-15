@@ -9,6 +9,10 @@ public class Tile{
         piece = p; x = xx; y = yy;
     }
 
+    public void setPiece(Piece p){
+        piece = p;
+    }
+
     public Piece getPiece(){
         return piece;
     }

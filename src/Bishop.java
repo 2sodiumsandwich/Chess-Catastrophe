@@ -4,7 +4,19 @@
 
 public class Bishop extends Piece{
 
-    public Bishop(boolean status, int x, int y){
-        super(status, x, y);
+    public Bishop(int x, int y, boolean color){
+        super(x, y, color);
+    }
+
+    @Override
+    public int[][] ValidSquares(Tile[][] tiles){
+        int[][] validSquares = new int[14][2];
+
+        return validSquares;
+    }
+
+    @Override
+    public String getName(){
+        return "bishop";
     }
 }

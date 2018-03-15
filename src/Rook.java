@@ -3,7 +3,12 @@
  */
 public class Rook extends Piece{
 
-    public Rook(boolean status, int x, int y){
-        super(status, x, y);
+    public Rook(int x, int y, boolean color){
+        super(x, y, color);
+    }
+
+    @Override
+    public String getName(){
+        return "rook";
     }
 }

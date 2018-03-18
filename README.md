@@ -124,7 +124,7 @@ example of checking a square
 isValid() checks to see if the square is within the gameboard
 
 
-**This is very important, will get indexOutOfBounds 90% of the time without it
+**This is very important, will get indexOutOfBounds 90% of the time without it**
 
 
 Then it checks if the piece is null or has a piece on it

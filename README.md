@@ -1,7 +1,7 @@
 # Chess-Catastrophe
 CJ-Kevin for APCSA 2018
 
-#Implementing the Knight class
+# Implementing the Knight class
 
 
 The framework of the knight class has been already copypasta'd into the class file
@@ -15,7 +15,7 @@ All you need to do is
 * Implementing Knight's validSquares() method
 * Creating 4 knight objects on the board
 
-##Creating Knight Textures
+## Creating Knight Textures
 
 
 You probably already know how to create the different textures for each of the pieces
@@ -46,7 +46,7 @@ light or dark represents the background it is standing on
 
 Reference the other piece textures if you need help
 
-##Adding the piece textures to the hashmap
+## Adding the piece textures to the hashmap
 
 
 You set the hashmap references in the createMaps() methods in the GameGui class
@@ -84,7 +84,7 @@ For pieces with an indicator, tack an 'i' to the end of the map reference
 
 
 
-##Implementing the knights ValidSquares() method
+## Implementing the knights ValidSquares() method
 
 
 the framework of the ValidSquares method is already there from me copypasting the class skeletons
@@ -136,7 +136,7 @@ if it is null, that square is safe
 if there is a piece, it must check to see if said pieces color is different from the current piece
 
 
-##Creating a knight piece on the GameGui#
+## Creating a knight piece on the GameGui
 
 Fairly simple 2 liner
 
@@ -157,7 +157,7 @@ I know that you have to enter the coords 4 times per constructer, but that's jus
 Remember that arrays start at 0, and 0,0 is at the top left corner
 
 
-##Pushing the changes to github
+## Pushing the changes to github
 
 
 After you get it to work and fully test **both sides**, you can push the changes to github

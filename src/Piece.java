@@ -52,4 +52,9 @@ public class Piece{
         return new int[0][0];
     }
 
+    public boolean isValid(int toX, int toY){
+        return (toX<=7 && toX>=0 && toY<=7 && toY>=0);
+        //checks if the move requested is within board boundaries
+    }
+
 }

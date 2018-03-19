@@ -30,7 +30,9 @@ public class GameGui extends JFrame{
     private int[] current = {-1,-1}; //current tile clicked for consistancy
 
     private List<String> moveSet = new ArrayList<>(); //turn saving, caps at 16
+    private List<String> turnSet = new ArrayList<>(); //list of 
     
+    int turnNum = 1;
 
     boolean turn = false;
     boolean gameOver = false;
@@ -185,9 +187,12 @@ public class GameGui extends JFrame{
                     }
                     
                     moveSet.add(0, horiz.get(String.valueOf(previous[0])) + verti.get(String.valueOf(previous[1])) + " -> " + horiz.get(String.valueOf(x)) + verti.get(String.valueOf(y)));
+                    turnSet.add(0, String.valueOf(turnNum));
                     if(moveSet.size() > 16){
                         moveSet.remove(moveSet.size() - 1);
+                        turnSet.remove(turnSet.size() - 1);
                     }
+                    turnNum++;
                     updateMoveset();
 
                     tiles[previous[0]][previous[1]].setPiece(null); //previous space to null
@@ -228,7 +233,7 @@ public class GameGui extends JFrame{
     public void updateMoveset(){
         String mvs = "";
         for(int i=0; i<moveSet.size(); i++){
-            mvs = mvs + moveSet.get(i) + "<br/>";
+            mvs = mvs + turnSet.get(i) + ". " + moveSet.get(i) + "<br/>";
         }
         moveC.setText("<html>" + mvs + "</html>");
     }
@@ -372,7 +377,10 @@ public class GameGui extends JFrame{
     }
 
     public void setUp(){
+        turn = false;
         gameOver = false;
+        turnSet.clear(); moveSet.clear(); turnNum = 1;
+        updateMoveset();
         turnC.setText("White's turn"); //default chess game starts with white
         turnC.setForeground(new Color(255,255,255)); //turn color
         for(int x = 0; x < tiles.length; x++){ //reset all tiles
@@ -420,11 +428,11 @@ public class GameGui extends JFrame{
 
         //Add queens
         texChange(3, 0, "queen", "b", false); tiles[3][0] = new Tile(new Queen(3, 0, true),3,0);
-        texChange(4, 7, "queen", "w", false); tiles[4][7] = new Tile(new Queen(4, 7, false),4,7);
+        texChange(3, 7, "queen", "w", false); tiles[3][7] = new Tile(new Queen(3, 7, false),3,7);
 
         //Add kings
         texChange(4, 0, "king", "b", false); tiles[4][0] = new Tile(new King(4, 0, true),4,0);
-        texChange(3, 7, "king", "w", false); tiles[3][7] = new Tile(new King(3, 7, false),3,7);
+        texChange(4, 7, "king", "w", false); tiles[4][7] = new Tile(new King(4, 7, false),4,7);
 
     }
 

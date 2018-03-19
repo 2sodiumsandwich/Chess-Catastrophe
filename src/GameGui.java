@@ -14,7 +14,7 @@ import java.util.*;
 
 import javax.swing.*;
 import javax.swing.border.*;
-
+import java.util.List;
 
 /**
  * Constructer for main GUI
@@ -28,6 +28,9 @@ public class GameGui extends JFrame{
 
     private int[] previous = {-1,-1}; //previous tile clicked, for movement
     private int[] current = {-1,-1}; //current tile clicked for consistancy
+
+    private List<String> moveSet = new ArrayList<>(); //turn saving, caps at 16
+    
 
     boolean turn = false;
     boolean gameOver = false;
@@ -48,6 +51,8 @@ public class GameGui extends JFrame{
         //Map of images for pieces
         //HashMap filled below in createMap()
         private final Map<String, ImageIcon> texMap = new HashMap<>();
+        private final Map<String, String> horiz = new HashMap<>();
+        private final Map<String, String> verti = new HashMap<>(); 
 
         //initiate turnC as an instance variable in order for it to be accessed in methods
         private JLabel turnC;
@@ -117,11 +122,13 @@ public class GameGui extends JFrame{
         turnC.setBackground(new Color(153,102,51));
 
         moveC = new JLabel();
-        moveC.setFont(new Font("Roboto", Font.PLAIN, 16));
+        moveC.setFont(new Font("Roboto", Font.PLAIN, 31));
         moveC.setBounds(800, 100, 250, 600);
         add(moveC);
         moveC.setOpaque(true);
         moveC.setBackground(new Color(255,204,153));
+        moveC.setHorizontalAlignment(JLabel.CENTER);
+        moveC.setVerticalAlignment(JLabel.TOP);
 
         setSize(8 * tileW + 250, 8 * tileH); //size of JFrame to fit tile buttons + ui on the right
         setLayout(null); //no layout cause I started w/o one and I'm too lazy to change everything
@@ -160,14 +167,29 @@ public class GameGui extends JFrame{
                     if(tiles[previous[0]][previous[1]].getPiece().getColor()){ //if desired move space is in validsquares, move the tile
                         texChange(x, y, tiles[previous[0]][previous[1]].getPiece().getName(), "b", false); //set textures
                         if(tiles[x][y].getPiece() != null && tiles[x][y].getPiece().getName() == "king") gameOver = true; //check if king has been captured, end the game if so
+                        if(tiles[previous[0]][previous[1]].getPiece().getName() == "pawn" && y == 7){
+                            texChange(x, y, "queen", "b", false); tiles[x][y] = new Tile(new Queen(x, y, true),x,y);
+                        } else {
+                            tiles[x][y].setPiece(tiles[previous[0]][previous[1]].getPiece());
+                        }
                         turn = !turn;
                     } else {
                         texChange(x, y, tiles[previous[0]][previous[1]].getPiece().getName(), "w", false);
                         if(tiles[x][y].getPiece() != null && tiles[x][y].getPiece().getName() == "king") gameOver = true;
+                        if(tiles[previous[0]][previous[1]].getPiece().getName() == "pawn" && y == 0){
+                            texChange(x, y, "queen", "w", false); tiles[x][y] = new Tile(new Queen(x, y, false),x,y);
+                        } else {
+                            tiles[x][y].setPiece(tiles[previous[0]][previous[1]].getPiece());
+                        }
                         turn = !turn;
                     }
-                    tiles[x][y].setPiece(tiles[previous[0]][previous[1]].getPiece()); //set piece after changing textures to check for king
                     
+                    moveSet.add(0, horiz.get(String.valueOf(previous[0])) + verti.get(String.valueOf(previous[1])) + " -> " + horiz.get(String.valueOf(x)) + verti.get(String.valueOf(y)));
+                    if(moveSet.size() > 16){
+                        moveSet.remove(moveSet.size() - 1);
+                    }
+                    updateMoveset();
+
                     tiles[previous[0]][previous[1]].setPiece(null); //previous space to null
                     texNull(previous[0], previous[1]); //previous space texture to default square
                     tiles[x][y].getPiece().setX(x);tiles[x][y].getPiece().setY(y); //set piece x y to new x y
@@ -185,7 +207,8 @@ public class GameGui extends JFrame{
                     break;
                 }
             }      
-        } else { System.out.println("fail");}
+        }
+        
 
         if(gameOver == true){ //check win condition
             if(turn == true){
@@ -200,6 +223,14 @@ public class GameGui extends JFrame{
         if(tiles[x][y].getPiece() != null && current[0] != -1  && tiles[x][y].getPiece().getColor() == turn && gameOver == false){
             MoveIndicators(tiles[x][y].getPiece().ValidSquares(tiles)); //show moveindicators on click
         }
+    }
+
+    public void updateMoveset(){
+        String mvs = "";
+        for(int i=0; i<moveSet.size(); i++){
+            mvs = mvs + moveSet.get(i) + "<br/>";
+        }
+        moveC.setText("<html>" + mvs + "</html>");
     }
 
     public ImageIcon scaleImage(ImageIcon x){
@@ -290,6 +321,13 @@ public class GameGui extends JFrame{
         texMap.put("lbkingi", new ImageIcon("resources/king/black-light-i.png"));
         texMap.put("dwkingi", new ImageIcon("resources/king/white-dark-i.png"));
         texMap.put("lwkingi", new ImageIcon("resources/king/white-light-i.png"));
+
+        //Load coordinate maps
+        horiz.put("0", "a");horiz.put("1", "b");horiz.put("2", "c");horiz.put("3", "d");
+        horiz.put("4", "e");horiz.put("5", "f");horiz.put("6", "g");horiz.put("7", "h");
+        
+        verti.put("0", "8");verti.put("1", "7");verti.put("2", "6");verti.put("3", "5");
+        verti.put("4", "4");verti.put("5", "3");verti.put("6", "2");verti.put("7", "1");
     }
     
     //clear all moveindicators, basically the opposite of moveindicators

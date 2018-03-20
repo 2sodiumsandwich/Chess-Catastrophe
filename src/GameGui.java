@@ -32,7 +32,7 @@ public class GameGui extends JFrame{
     private List<String> moveSet = new ArrayList<>(); //turn saving, caps at 16
     private List<String> turnSet = new ArrayList<>(); //list of 
     
-    int turnNum = 1;
+    int turnNum = 0;
 
     boolean turn = false;
     boolean gameOver = false;
@@ -114,7 +114,8 @@ public class GameGui extends JFrame{
         newgame.setBorder(null); // border bad
         newgame.setFocusPainted(false);// no more ugly focus box around "New Game" when clicked
         newgame.setOpaque(true); //in order for color to show for some reason
-        newgame.setBackground(new Color(153,102,51)); //color of newgame to make it not completely 
+        newgame.setBackground(new Color(153,102,51)); //color of newgame to make it not completely bad
+        
         
         turnC = new JLabel("White's Turn", JLabel.CENTER);
         turnC.setFont(new Font("Roboto", Font.PLAIN, 40));
@@ -167,9 +168,23 @@ public class GameGui extends JFrame{
             for(int i = 0; i<tiles[previous[0]][previous[1]].getPiece().ValidSquares(tiles).length; i++){ //loops through valid squares of previous tiles
                 if(x==tiles[previous[0]][previous[1]].getPiece().ValidSquares(tiles)[i][0] && y==tiles[previous[0]][previous[1]].getPiece().ValidSquares(tiles)[i][1] && tiles[previous[0]][previous[1]].getPiece().getColor() == turn){
                     if(tiles[previous[0]][previous[1]].getPiece().getColor()){ //if desired move space is in validsquares, move the tile
-                        texChange(x, y, tiles[previous[0]][previous[1]].getPiece().getName(), "b", false); //set textures
+                        texChange(x, y, tiles[previous[0]][previous[1]].getPiece().getName(), "b", false); //set 
+                        
+                        if(tiles[x][y].getPiece() != null && tiles[x][y].getPiece() != null){ // check if piece is being taken
+                            moveSet.add(0, moveSet.get(0) + " " + tiles[previous[0]][previous[1]].getPiece().getAbbr() + "x" + horiz.get(String.valueOf(x)) + verti.get(String.valueOf(y)));
+                            moveSet.remove(1);
+                        } else { //no pieces has been taken
+                            if(tiles[previous[0]][previous[1]].getPiece() != null && tiles[previous[0]][previous[1]].getPiece().getName() != "pawn"){    
+                                moveSet.add(0, moveSet.get(0) +  " " + tiles[previous[0]][previous[1]].getPiece().getAbbr() + horiz.get(String.valueOf(x)) + verti.get(String.valueOf(y)));
+                                moveSet.remove(1);
+                            } else {
+                                moveSet.add(0, moveSet.get(0) + " " +  horiz.get(String.valueOf(x)) + verti.get(String.valueOf(y)));
+                                moveSet.remove(1);
+                            }
+                        }
+
                         if(tiles[x][y].getPiece() != null && tiles[x][y].getPiece().getName() == "king") gameOver = true; //check if king has been captured, end the game if so
-                        if(tiles[previous[0]][previous[1]].getPiece().getName() == "pawn" && y == 7){
+                        if(tiles[previous[0]][previous[1]].getPiece().getName() == "pawn" && y == 7){//promotion
                             texChange(x, y, "queen", "b", false); tiles[x][y] = new Tile(new Queen(x, y, true),x,y);
                         } else {
                             tiles[x][y].setPiece(tiles[previous[0]][previous[1]].getPiece());
@@ -177,6 +192,23 @@ public class GameGui extends JFrame{
                         turn = !turn;
                     } else {
                         texChange(x, y, tiles[previous[0]][previous[1]].getPiece().getName(), "w", false);
+
+                        if(tiles[x][y].getPiece() != null && tiles[x][y].getPiece() != null){ // check if piece is being taken
+                            moveSet.add(0, tiles[previous[0]][previous[1]].getPiece().getAbbr() + "x" + horiz.get(String.valueOf(x)) + verti.get(String.valueOf(y)));
+                            turnNum++;
+                            turnSet.add(0, String.valueOf(turnNum));
+                        } else { //no pieces has been taken
+                            if(tiles[previous[0]][previous[1]].getPiece() != null && tiles[previous[0]][previous[1]].getPiece().getName() != "pawn"){    
+                                moveSet.add(0, tiles[previous[0]][previous[1]].getPiece().getAbbr() + horiz.get(String.valueOf(x)) + verti.get(String.valueOf(y)));
+                                turnNum++;
+                                turnSet.add(0, String.valueOf(turnNum));
+                            } else {
+                                moveSet.add(0, horiz.get(String.valueOf(x)) + verti.get(String.valueOf(y)));
+                                turnNum++;
+                                turnSet.add(0, String.valueOf(turnNum));
+                            }
+                        }
+
                         if(tiles[x][y].getPiece() != null && tiles[x][y].getPiece().getName() == "king") gameOver = true;
                         if(tiles[previous[0]][previous[1]].getPiece().getName() == "pawn" && y == 0){
                             texChange(x, y, "queen", "w", false); tiles[x][y] = new Tile(new Queen(x, y, false),x,y);
@@ -185,14 +217,12 @@ public class GameGui extends JFrame{
                         }
                         turn = !turn;
                     }
+
                     
-                    moveSet.add(0, horiz.get(String.valueOf(previous[0])) + verti.get(String.valueOf(previous[1])) + " -> " + horiz.get(String.valueOf(x)) + verti.get(String.valueOf(y)));
-                    turnSet.add(0, String.valueOf(turnNum));
                     if(moveSet.size() > 16){
                         moveSet.remove(moveSet.size() - 1);
                         turnSet.remove(turnSet.size() - 1);
                     }
-                    turnNum++;
                     updateMoveset();
 
                     tiles[previous[0]][previous[1]].setPiece(null); //previous space to null
@@ -292,7 +322,15 @@ public class GameGui extends JFrame{
         texMap.put("lwbishopi", new ImageIcon("resources/bishop/white-light-i.png"));
 
         //knights
-        
+        texMap.put("dbknight", new ImageIcon("resources/knight/black-dark.png"));
+        texMap.put("lbknight", new ImageIcon("resources/knight/black-light.png"));
+        texMap.put("dwknight", new ImageIcon("resources/knight/white-dark.png"));
+        texMap.put("lwknight", new ImageIcon("resources/knight/white-light.png"));
+
+        texMap.put("dbknighti", new ImageIcon("resources/knight/black-dark-i.png"));
+        texMap.put("lbknighti", new ImageIcon("resources/knight/black-light-i.png"));
+        texMap.put("dwknighti", new ImageIcon("resources/knight/white-dark-i.png"));
+        texMap.put("lwknighti", new ImageIcon("resources/knight/white-light-i.png"));
 
         //rooks
         texMap.put("dbrook", new ImageIcon("resources/rook/black-dark.png"));
@@ -379,7 +417,7 @@ public class GameGui extends JFrame{
     public void setUp(){
         turn = false;
         gameOver = false;
-        turnSet.clear(); moveSet.clear(); turnNum = 1;
+        turnSet.clear(); moveSet.clear(); turnNum = 0;
         updateMoveset();
         turnC.setText("White's turn"); //default chess game starts with white
         turnC.setForeground(new Color(255,255,255)); //turn color
@@ -395,6 +433,10 @@ public class GameGui extends JFrame{
         }
 
         //Add knights
+        texChange(1, 0, "knight", "b", false); tiles[1][0] = new Tile(new Knight(1, 0, true),1,0);
+        texChange(6, 0, "knight", "b", false); tiles[6][0] = new Tile(new Knight(6, 0, true),6,7);
+        texChange(1, 7, "knight", "w", false); tiles[1][7] = new Tile(new Knight(1, 7, false),1,0);
+        texChange(6, 7, "knight", "w", false); tiles[6][7] = new Tile(new Knight(6, 7, false),6,7);
 
         //Add bishops
         texChange(2, 0, "bishop", "b", false); tiles[2][0] = new Tile(new Bishop(2, 0, true),2,0);

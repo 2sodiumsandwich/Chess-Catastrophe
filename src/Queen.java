@@ -131,7 +131,12 @@ public class Queen extends Piece{
             }
         return validSquares;
     }
-
+    
+    @Override
+    public String getAbbr(){
+        return "Q";
+    }
+    
     @Override
     public String getName(){
         return "queen";

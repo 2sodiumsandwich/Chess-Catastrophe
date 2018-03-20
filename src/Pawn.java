@@ -10,6 +10,11 @@ public class Pawn extends Piece{
     }
 
     @Override
+    public String getAbbr(){
+        return "P";
+    }
+
+    @Override
     public String getName(){
         return "pawn";
     }

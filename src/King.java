@@ -9,8 +9,13 @@ public class King extends Piece{
     }
 
     @Override
+    public String getAbbr(){
+        return "K";
+    }
+
+    @Override
     public int[][] ValidSquares(Tile[][] tiles){
-        int[][] validSquares = new int[8][2];
+        int[][] validSquares = new int[10][2];
         int i=0;
         for(int t = 0; t<validSquares.length; t++){
             validSquares[t][0] = -1; validSquares[t][1] = -1;

@@ -77,6 +77,11 @@ public class Rook extends Piece{
     }
 
     @Override
+    public String getAbbr(){
+        return "R";
+    }
+
+    @Override
     public String getName(){
         return "rook";
     }

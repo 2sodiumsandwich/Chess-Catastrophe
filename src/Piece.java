@@ -19,6 +19,10 @@ public class Piece{
         return color;
     }
 
+    public String getAbbr(){
+        return "R";
+    }
+    
     public String getName(){
         return "pawn"; //returns pawn for testing purposes
         //method overridden in classes/

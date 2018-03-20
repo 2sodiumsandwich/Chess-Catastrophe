@@ -78,6 +78,11 @@ public class Bishop extends Piece{
     }
 
     @Override
+    public String getAbbr(){
+        return "B";
+    }
+
+    @Override
     public String getName(){
         return "bishop";
     }
